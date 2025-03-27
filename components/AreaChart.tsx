@@ -115,8 +115,23 @@ const AreaChart = ({ data } : {data : any}) => {
     
         // Circle at intersection
         const focusCircle = crosshairGroup.append("circle")
-            .attr("r", 1)
+            .attr("r", 4)
             .attr("fill", "black");
+    
+        // Tooltip for X-axis (datetime)
+        const xTooltip = svg.append("text")
+            .attr("text-anchor", "middle")
+            .attr("font-size", "12px")
+            .attr("fill", "black")
+            .style("background", "white")
+            .style("pointer-events", "none");
+    
+        // Tooltip for Y-axis (price)
+        const yTooltip = svg.append("text")
+            .attr("text-anchor", "end")
+            .attr("font-size", "12px")
+            .attr("fill", "black")
+            .style("pointer-events", "none");
     
         // Mouse interaction overlay
         svg.append("rect")
@@ -124,7 +139,11 @@ const AreaChart = ({ data } : {data : any}) => {
             .attr("height", height)
             .attr("fill", "transparent")
             .on("mouseover", () => crosshairGroup.style("display", null))
-            .on("mouseout", () => crosshairGroup.style("display", "none"))
+            .on("mouseout", () => {
+                crosshairGroup.style("display", "none");
+                xTooltip.style("display", "none");
+                yTooltip.style("display", "none");
+            })
             .on("mousemove", function (event) {
                 const [mouseX] = d3.pointer(event, this);
                 const mouseTime = x.invert(mouseX);
@@ -136,13 +155,30 @@ const AreaChart = ({ data } : {data : any}) => {
                 const b = data[index] ?? a;
                 const closest = mouseTime - a.timeStamp > b.timeStamp - mouseTime ? b : a;
     
+                const xPos = x(closest.timeStamp);
+                const yPos = y(closest.price);
+    
                 // Update crosshair position
-                verticalLine.attr("x1", x(closest.timeStamp)).attr("x2", x(closest.timeStamp));
-                horizontalLine.attr("y1", y(closest.price)).attr("y2", y(closest.price));
-                focusCircle.attr("cx", x(closest.timeStamp)).attr("cy", y(closest.price));
+                verticalLine.attr("x1", xPos).attr("x2", xPos);
+                horizontalLine.attr("y1", yPos).attr("y2", yPos);
+                focusCircle.attr("cx", xPos).attr("cy", yPos);
+    
+                // Update tooltips
+                xTooltip
+                    .attr("x", xPos)
+                    .attr("y", height + 15)
+                    .text(d3.timeFormat("%b %d, %H:%M")(closest.timeStamp))
+                    .style("display", "block");
+    
+                yTooltip
+                    .attr("x", width + 10)
+                    .attr("y", yPos)
+                    .text(`$${closest.price.toFixed(2)}`)
+                    .style("display", "block");
             });
     
     }, [data]);
+    
     
   
     return <svg ref={chartRef}></svg>;
