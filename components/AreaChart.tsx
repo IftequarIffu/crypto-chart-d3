@@ -16,6 +16,7 @@ const AreaChart = ({ data } : {data : any}) => {
         const margin = { top: 50, right: 40, bottom: 40, left: 60 };
         const width = 800 - margin.left - margin.right;
         const height = 400 - margin.top - margin.bottom;
+        const barMaxHeight = height * 0.1; // 5% of the chart height
     
         // Clear previous SVG before rendering new one
         d3.select(chartRef.current).selectAll("*").remove();
@@ -30,15 +31,18 @@ const AreaChart = ({ data } : {data : any}) => {
         // Define scales
         const x = d3.scaleTime().range([0, width]);
         const y = d3.scaleLinear().range([height, 0]);
+        const yVolume = d3.scaleLinear().range([barMaxHeight, 0]);
     
         data.forEach(d => {
             d.timeStamp = new Date(d.timeStamp);  // Convert UNIX timestamp to Date
             d.price = +d.price;
+            d.volume = +d.volume;
         });
     
         // Set the domains
         x.domain(d3.extent(data, d => d.timeStamp));
         y.domain([0, d3.max(data, d => d.price)]);
+        yVolume.domain([0, d3.max(data, d => d.volume)]);
     
         // Add X axis
         svg.append("g")
@@ -61,12 +65,12 @@ const AreaChart = ({ data } : {data : any}) => {
     
         gradient.append("stop")
             .attr("offset", "0%")
-            .attr("stop-color", "#85bb65")  // Green at the top
+            .attr("stop-color", "#85bb65")  
             .attr("stop-opacity", 0.8);
     
         gradient.append("stop")
             .attr("offset", "100%")
-            .attr("stop-color", "white")  // White at the bottom
+            .attr("stop-color", "white")  
             .attr("stop-opacity", 0.1);
     
         // Define area generator
@@ -78,7 +82,7 @@ const AreaChart = ({ data } : {data : any}) => {
         // Add the area path with gradient
         svg.append("path")
             .datum(data)
-            .attr("fill", "url(#area-gradient)")  // Apply gradient fill
+            .attr("fill", "url(#area-gradient)")  
             .attr("d", area);
     
         // Define line generator
@@ -93,6 +97,18 @@ const AreaChart = ({ data } : {data : any}) => {
             .attr("stroke", "#85bb65")
             .attr("stroke-width", 1.5)
             .attr("d", line);
+    
+        // --- ADD BARS FOR VOLUME ---
+        svg.selectAll(".bar")
+            .data(data)
+            .enter().append("rect")
+            .attr("class", "bar")
+            .attr("x", d => x(d.timeStamp) - 2)  // Centered around timestamp
+            .attr("y", d => height - yVolume(d.volume))
+            .attr("width", 1)  // Small width for bars
+            .attr("height", d => yVolume(d.volume))
+            .attr("fill", "gray")  // Blue color for volume bars
+            .attr("opacity", 0.3);
     
         // --- CROSSHAIR ---
         const crosshairGroup = svg.append("g").style("display", "none");
@@ -123,7 +139,6 @@ const AreaChart = ({ data } : {data : any}) => {
             .attr("text-anchor", "middle")
             .attr("font-size", "12px")
             .attr("fill", "black")
-            .style("background", "white")
             .style("pointer-events", "none");
     
         // Tooltip for Y-axis (price)
@@ -178,6 +193,8 @@ const AreaChart = ({ data } : {data : any}) => {
             });
     
     }, [data]);
+    
+    
     
     
   
