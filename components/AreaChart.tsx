@@ -16,7 +16,7 @@ const AreaChart = ({ data } : {data : any}) => {
         const margin = { top: 50, right: 40, bottom: 40, left: 60 };
         const width = 800 - margin.left - margin.right;
         const height = 400 - margin.top - margin.bottom;
-        const barMaxHeight = height * 0.1; // 5% of the chart height
+        const barMaxHeight = height * 0.1; // 10% of the chart height
     
         // Clear previous SVG before rendering new one
         d3.select(chartRef.current).selectAll("*").remove();
@@ -43,16 +43,6 @@ const AreaChart = ({ data } : {data : any}) => {
         x.domain(d3.extent(data, d => d.timeStamp));
         y.domain([0, d3.max(data, d => d.price)]);
         yVolume.domain([0, d3.max(data, d => d.volume)]);
-    
-        // Add X axis
-        svg.append("g")
-            .attr("transform", `translate(0,${height})`)
-            .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%b %d %H:%M")));
-    
-        // Move Y axis to the right
-        svg.append("g")
-            .attr("transform", `translate(${width},0)`)
-            .call(d3.axisRight(y).tickFormat(d => `$${d.toFixed(2)}`));
     
         // Define gradient
         const defs = svg.append("defs");
@@ -99,15 +89,17 @@ const AreaChart = ({ data } : {data : any}) => {
             .attr("d", line);
     
         // --- ADD BARS FOR VOLUME ---
+        const barWidth = Math.max(width / data.length - 2, 2); // Dynamic width with spacing
+    
         svg.selectAll(".bar")
             .data(data)
             .enter().append("rect")
             .attr("class", "bar")
-            .attr("x", d => x(d.timeStamp) - 2)  // Centered around timestamp
+            .attr("x", d => x(d.timeStamp) - barWidth / 2) // Centering bars
             .attr("y", d => height - yVolume(d.volume))
-            .attr("width", 1)  // Small width for bars
+            .attr("width", barWidth) // Adding spacing
             .attr("height", d => yVolume(d.volume))
-            .attr("fill", "gray")  // Blue color for volume bars
+            .attr("fill", "gray")
             .attr("opacity", 0.3);
     
         // --- CROSSHAIR ---
@@ -193,6 +185,7 @@ const AreaChart = ({ data } : {data : any}) => {
             });
     
     }, [data]);
+    
     
     
     
