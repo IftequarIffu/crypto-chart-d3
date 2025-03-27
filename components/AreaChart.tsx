@@ -2,8 +2,6 @@
 import { useEffect, useRef } from "react"
 import * as d3 from "d3";
 
-
-
 const AreaChart = ({ data } : {data : any}) => {
     const chartRef = useRef();
 
@@ -147,6 +145,33 @@ const AreaChart = ({ data } : {data : any}) => {
         .attr("dy", "0.35em") // Center text vertically
         .style("pointer-events", "none");
 
+    // --- LATEST PRICE TAG ---
+    const lastDataPoint = data[data.length - 1];
+    const latestPriceText = `$${lastDataPoint.price.toFixed(2)}`;
+    
+    // Latest price background rectangle
+    const latestPriceBackground = svg.append("rect")
+        .attr("x", x(lastDataPoint.timeStamp) - 42)
+        .attr("y", y(lastDataPoint.price) - 12)
+        .attr("fill", "#85bb65")  // Green background
+        .attr("rx", 4)  // Rounded corners
+        .attr("ry", 4);
+
+    // Latest price text
+    const latestPriceLabel = svg.append("text")
+        .attr("x", x(lastDataPoint.timeStamp) - 40)
+        .attr("y", y(lastDataPoint.price))
+        .attr("font-size", "14px")
+        .attr("fill", "black")
+        .text(latestPriceText);
+
+    // Adjust background size after adding text
+    const labelBBox = latestPriceLabel.node().getBBox();
+    latestPriceBackground
+        .attr("width", labelBBox.width + 10)
+        .attr("height", labelBBox.height + 6)
+        .attr("y", labelBBox.y - 3);
+
     // Mouse interaction overlay
     svg.append("rect")
         .attr("width", width)
@@ -190,10 +215,11 @@ const AreaChart = ({ data } : {data : any}) => {
 
             const yText = `$${closest.price.toFixed(2)}`;
             yTooltip
-                .attr("x", width + 10)
+                .attr("x", width + 36)
                 .attr("y", yPos)
                 .text(yText)
-                .style("display", "block");
+                .style("display", "block")
+                .attr("font-size", "14px");
 
             // Get text size and position background accordingly
             const bbox = yTooltip.node().getBBox();
@@ -208,8 +234,6 @@ const AreaChart = ({ data } : {data : any}) => {
 }, [data]);
 
     
-    
-  
     return <svg ref={chartRef}></svg>;
   };
   

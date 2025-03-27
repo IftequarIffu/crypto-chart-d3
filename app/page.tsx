@@ -21,9 +21,9 @@ export default function Home() {
   
 
   const { isPending, error, data } = useQuery({
-    queryKey: [`timeRange-30`],
+    queryKey: [`timeRange-90`],
     queryFn: async () => {
-        const res = await axios.get(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=30`)
+        const res = await axios.get(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=90`)
         // console.log("API call made")
         const transformedData = transformWholeData(res.data)
         return transformedData
