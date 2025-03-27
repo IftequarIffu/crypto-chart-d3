@@ -31,12 +31,6 @@ const AreaChart = ({ data } : {data : any}) => {
         const x = d3.scaleTime().range([0, width]);
         const y = d3.scaleLinear().range([height, 0]);
       
-        // Parse timeStamp & convert price to number
-        // const parseTime = d3.timeParse("%Y-%m-%dT%H:%M:%S"); // Adjust format as needed
-        // data.forEach(d => {
-        //   d.timeStamp = parseTime(d.timeStamp);
-        //   d.price = +d.price;
-        // });
 
         data.forEach(d => {
             d.timeStamp = new Date(d.timeStamp);  // Convert UNIX timestamp to Date
