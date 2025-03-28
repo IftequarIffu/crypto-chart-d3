@@ -233,6 +233,22 @@ const AreaChart = ({ data } : {data : any}) => {
                 .style("display", "block");
         });
 
+         // ---- ADD HORIZONTAL GRID LINES ----
+    const xGrid = svg.append("g")
+    .attr("class", "grid")
+    .call(
+        d3.axisTop(x)
+            .ticks(6) 
+            .tickSize(-height)
+            .tickFormat("") // Remove text labels
+    );
+
+    xGrid.selectAll("line")
+        .attr("stroke", "#ddd")
+        .attr("stroke-opacity", 1)
+
+    xGrid.select(".domain").remove(); // Remove the Y-axis line
+
 }, [data]);
 
     
