@@ -11,8 +11,8 @@ const AreaChart = ({ data } : {data : any}) => {
     if (!data || data.length === 0) return;
 
     // Set dimensions and margins
-    const margin = { top: 50+5, right: 40+5, bottom: 40+5, left: 60+5 };
-    // const margin = { top: 2, right: 2, bottom: 2, left: 2 };
+    // const margin = { top: 50+5, right: 40+5, bottom: 40+5, left: 60+5 };
+    const margin = { top: 3, right: 3, bottom: 3, left: 3 };
     const width = 800 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
     const barMaxHeight = height * 0.1; // 10% of the chart height
@@ -26,33 +26,6 @@ const AreaChart = ({ data } : {data : any}) => {
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
-
-        svg.append("line")
-        .attr("x1", 0)
-        .attr("x2", width)
-        .attr("y1", height)
-        .attr("y2", height)
-        .attr("stroke", "black")
-        .attr("stroke-width", 0.3)
-        .attr("stroke-opacity", 0.3);
-    
-    svg.append("line")
-        .attr("x1", 0)
-        .attr("x2", 0)
-        .attr("y1", 0)
-        .attr("y2", height)
-        .attr("stroke", "black")
-        .attr("stroke-width", 1)
-        .attr("stroke-opacity", 0.3);
-    
-    svg.append("line")
-        .attr("x1", width)
-        .attr("x2", width)
-        .attr("y1", 0)
-        .attr("y2", height)
-        .attr("stroke", "black")
-        .attr("stroke-width", 1)
-        .attr("stroke-opacity", 0.3);
 
     // Define scales
     const x = d3.scaleTime().range([0, width]);
@@ -102,9 +75,6 @@ const AreaChart = ({ data } : {data : any}) => {
         .datum(data)
         .attr("fill", "url(#area-gradient)")  
         .attr("d", area)
-        // .attr("style", "outline: thin solid black;");
-        .attr("style", "stroke: black; stroke-width: 1.5; stroke-opacity: 0.3; shape-rendering: crispEdges;")
-
 
     // Define line generator
     const line = d3.line()
@@ -185,14 +155,14 @@ const AreaChart = ({ data } : {data : any}) => {
     // Latest price background rectangle
     const latestPriceBackground = svg.append("rect")
         .attr("x", x(lastDataPoint.timeStamp) - 42)
-        .attr("y", y(lastDataPoint.price) - 12)
+        .attr("y", y(lastDataPoint.price) + 10)
         .attr("fill", "#4b40ee")  // Purple background
         .attr("rx", 4)  // Rounded corners
         .attr("ry", 4);
 
     // Latest price text
     const latestPriceLabel = svg.append("text")
-        .attr("x", x(lastDataPoint.timeStamp) - 40)
+        .attr("x", x(lastDataPoint.timeStamp) - 30)
         .attr("y", y(lastDataPoint.price))
         .attr("font-size", "18px")
         .attr("fill", "white")
@@ -201,8 +171,8 @@ const AreaChart = ({ data } : {data : any}) => {
     // Adjust background size after adding text
     const labelBBox = latestPriceLabel.node().getBBox();
     latestPriceBackground
-        .attr("width", labelBBox.width + 20)
-        .attr("height", labelBBox.height + 6)
+        .attr("width", labelBBox.width + 25)
+        .attr("height", labelBBox.height + 8)
         .attr("y", labelBBox.y - 3);
 
     // Mouse interaction overlay
@@ -248,8 +218,8 @@ const AreaChart = ({ data } : {data : any}) => {
 
             const yText = `${closest.price.toFixed(2)}`;
             yTooltip
-                .attr("x", width + 36)
-                .attr("y", yPos)
+                .attr("x", width + 50)
+                .attr("y", yPos + 4)
                 .text(yText)
                 .style("display", "block")
                 .attr("font-size", "18px");
@@ -257,10 +227,10 @@ const AreaChart = ({ data } : {data : any}) => {
             // Get text size and position background accordingly
             const bbox = yTooltip.node().getBBox();
             yTooltipBackground
-                .attr("x", bbox.x - 5)
-                .attr("y", bbox.y - 2)
-                .attr("width", bbox.width + 10)
-                .attr("height", bbox.height + 4)
+                .attr("x", bbox.x - 10)
+                .attr("y", bbox.y - 4)
+                .attr("width", bbox.width + 20)
+                .attr("height", bbox.height + 8)
                 .style("display", "block");
         });
 

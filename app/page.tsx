@@ -37,7 +37,7 @@ export default function Home() {
 
   return (
     <div className="w-full h-screen flex items-center justify-center bg-white text-black">
-        <div>
+        <div className="border-2 border-t-0  border-black/10">
             <AreaChart data={data} />
           </div>
        
