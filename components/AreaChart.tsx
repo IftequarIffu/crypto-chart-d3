@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 'use client'
 import { useEffect, useRef } from "react"
 import * as d3 from "d3";
 
-const AreaChart = ({ data } : {data : any}) => {
+const AreaChart = ({ data, currentPrice, isFullScreen } : {data : any, currentPrice: number, isFullScreen: boolean}) => {
     const chartRef = useRef();
 
     console.log(data)
@@ -13,8 +16,18 @@ const AreaChart = ({ data } : {data : any}) => {
     // Set dimensions and margins
     // const margin = { top: 50+5, right: 40+5, bottom: 40+5, left: 60+5 };
     const margin = { top: 3, right: 3, bottom: 3, left: 3 };
-    const width = 800 - margin.left - margin.right;
-    const height = 400 - margin.top - margin.bottom;
+    let width;
+    let height;
+    if(isFullScreen) {
+        width = 1000 - margin.left - margin.right;
+        height = 600 - margin.top - margin.bottom;
+    }
+    else{
+        width = 800 - margin.left - margin.right;
+        height = 400 - margin.top - margin.bottom;
+    }
+
+    // const 
     const barMaxHeight = height * 0.1; // 10% of the chart height
 
     // Clear previous SVG before rendering new one
@@ -150,7 +163,7 @@ const AreaChart = ({ data } : {data : any}) => {
 
     // --- LATEST PRICE TAG ---
     const lastDataPoint = data[data.length - 1];
-    const latestPriceText = `${lastDataPoint.price.toFixed(2)}`;
+    const latestPriceText = `${currentPrice}`;
     
     // Latest price background rectangle
     const latestPriceBackground = svg.append("rect")
@@ -250,10 +263,15 @@ const AreaChart = ({ data } : {data : any}) => {
 
     xGrid.select(".domain").remove(); // Remove the Y-axis line
 
-}, [data]);
+}, [data, isFullScreen, currentPrice]);
 
     
-    return <svg ref={chartRef}></svg>;
+    return (
+        <div className="border-2 border-t-0  border-black/10">
+            <svg ref={chartRef}></svg>
+        </div>
+    
+    );
   };
   
   export default AreaChart;
