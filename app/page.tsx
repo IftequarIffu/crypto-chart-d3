@@ -56,7 +56,7 @@ export default function Home() {
         const transformedData = transformWholeData(res.data)
         return transformedData
     },
-    staleTime: 5*60*1000,
+    staleTime: 2*60*1000,
     refetchInterval: 5*60*1000,
     notifyOnChangeProps: "all",
   })
@@ -76,7 +76,7 @@ export default function Home() {
             priceChangePerc24hr
         }
     },
-    staleTime: 2*60*1000,
+    staleTime: 30*1000,
     refetchInterval: 60*1000,
     notifyOnChangeProps: "all",
   })
