@@ -27,36 +27,43 @@ export const timeRanges = [
     {
         id: 0,
         text: '1d',
-        days: 1
+        timeState: 1,
+        useQueryCacheKey: 1
     },
     {
         id: 1,
         text: '3d',
-        days: 3
+        timeState: 3,
+        useQueryCacheKey: 3
     },
     {
         id: 2,
         text: '1w',
-        days: 1 * 7
+        timeState: 7,
+        useQueryCacheKey: 7
     },
     {
         id: 3,
         text: '1m',
-        days: 1 * 30
+        timeState: 30,
+        useQueryCacheKey: 365
     },
     {
         id: 4,
         text: '6m',
-        days: 1 * 30 * 6
+        timeState: 180, 
+        useQueryCacheKey: 365
     },
     {
         id: 5,
         text: '1y',
-        days: 1 * 365
+        timeState: 365,
+        useQueryCacheKey: 365
     },
     {
         id: 6,
         text: 'max',
-        days: 0
+        timeState: 0,
+        useQueryCacheKey: 0
     },
 ]

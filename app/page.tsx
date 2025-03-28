@@ -1,29 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
-import AreaChart from "@/components/AreaChart";
-import ChartButtons from "@/components/ChartButtons";
-import SettingsComponent from "@/components/SettingsComponent";
-import StatisticsComponent from "@/components/StatisticsComponent";
-import SummaryComponent from "@/components/SummaryComponent";
+
 import TopDiv from "@/components/TopDiv";
-import { COINGECKO_API_URL } from "@/lib/constants";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { timeRanges } from "@/lib/constants";
 import { useState } from "react";
-import AnalyticsComponent from "@/components/AnalyticsComponent";
 import BottomDiv from "@/components/BottomDiv";
 
 
 export default function Home() {
 
-  const [selectedTimeRange, setSelectedTimeRange] = useState(180)
+  const [selectedTimeRange, setSelectedTimeRange] = useState(timeRanges[4])
 
   const [currentButton, setCurrentButton] = useState<string>("Chart")
 
   const [isFullScreen, setIsFullScreen] = useState(false)
 
-  const changeTimeRange = (noOfDays : number) => {
-    setSelectedTimeRange(noOfDays)
+  const changeTimeRange = (item: any) => {
+    setSelectedTimeRange(item)
   }
 
   const changeCurrentButton = (button: string) => {
@@ -33,54 +26,6 @@ export default function Home() {
   const toggleFullScreen = () => {
     setIsFullScreen((prev) => !prev)
   }
-
-  function transformWholeData(data: any) {
-    const transformedData =  []
-  
-    for(let i=0; i<data.prices.length; i++) {
-      transformedData.push({
-        "timeStamp": data.prices[i][0],
-        "price": data.prices[i][1],
-        "volume": data.total_volumes[i][1]
-      })
-    }
-  
-    return transformedData
-  }
-  
-
-  const { isPending: isChartDataPending, error: isChartDataErrored, data: chartData } = useQuery({
-    queryKey: [`timeRange-${selectedTimeRange}`],
-    queryFn: async () => {
-        const res = await axios.get(`${COINGECKO_API_URL}/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=${selectedTimeRange}`)
-        // console.log("API call made")
-        const transformedData = transformWholeData(res.data)
-        return transformedData
-    },
-    staleTime: 2*60*1000,
-    refetchInterval: 5*60*1000,
-    notifyOnChangeProps: "all",
-  })
-
-  const { isPending: isCoinPriceDataPending, error: isCoinPriceDataErrored, data: coinPriceData } = useQuery({
-    queryKey: [`price`],
-    queryFn: async () => {
-        const res = await axios.get(`${COINGECKO_API_URL}/api/v3/coins/bitcoin`)
-        // console.log("API call made")
-        // const transformedData = transformWholeData(res.data)
-        const currentPrice = res.data.market_data.current_price.usd
-        const priceChange24hr = res.data.market_data.price_change_24h
-        const priceChangePerc24hr = res.data.market_data.price_change_percentage_24h
-        return {
-            currentPrice,
-            priceChange24hr,
-            priceChangePerc24hr
-        }
-    },
-    staleTime: 30*1000,
-    refetchInterval: 60*1000,
-    notifyOnChangeProps: "all",
-  })
 
 
 
@@ -121,7 +66,6 @@ export default function Home() {
           
           <BottomDiv 
           isFullScreen={isFullScreen} 
-          changeCurrentButton={changeCurrentButton}
           changeTimeRange={changeTimeRange}
           selectedTimeRange={selectedTimeRange}
           currentButton={currentButton}

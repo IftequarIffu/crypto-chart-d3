@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+'use client'
 import React from 'react'
 import SummaryComponent from './SummaryComponent'
 import StatisticsComponent from './StatisticsComponent'
@@ -5,26 +7,22 @@ import AnalyticsComponent from './AnalyticsComponent'
 import SettingsComponent from './SettingsComponent'
 import axios from 'axios'
 import { COINGECKO_API_URL } from '@/lib/constants'
-import { QueryClient, useQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import ChartButtons from './ChartButtons'
 import AreaChart from './AreaChart'
 import Skeleton from 'react-loading-skeleton'
-import { queryClient } from '@/providers'
-import { QueryCache } from '@tanstack/react-query'
 
 
 const BottomDiv = ({
     isFullScreen, 
-    changeCurrentButton, 
     changeTimeRange, 
     selectedTimeRange, 
     currentButton,
     toggleFullScreen
 } : {
     isFullScreen: boolean,
-    changeCurrentButton: (button: string) => void,
-    changeTimeRange: (noOfDays: number) => void,
-    selectedTimeRange: number,
+    changeTimeRange: (item: any) => void,
+    selectedTimeRange: any,
     currentButton: string,
     toggleFullScreen: () => void
 }) => {
@@ -44,9 +42,9 @@ const BottomDiv = ({
       }
 
     const { isPending: isChartDataPending, error: isChartDataErrored, data: chartData } = useQuery({
-        queryKey: [`timeRange-${selectedTimeRange}`],
+        queryKey: [`timeRange-${selectedTimeRange.useQueryCacheKey}`],
         queryFn: async () => {
-            const res = await axios.get(`${COINGECKO_API_URL}/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=${selectedTimeRange}`)
+            const res = await axios.get(`${COINGECKO_API_URL}/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=${selectedTimeRange.useQueryCacheKey}`)
             // console.log("API call made")
             const transformedData = transformWholeData(res.data)
             return transformedData
@@ -116,14 +114,24 @@ const BottomDiv = ({
 
                 {isChartDataPending && <Skeleton width={"full"} height={400} />}
 
-                {/* {currentButton === "Chart" && !isChartDataPending && !isChartDataErrored && 
-                !isCoinPriceDataPending && !isCoinPriceDataErrored && selectedTimeRange === 180 &&
-                
-                  <AreaChart data={halfYearData} currentPrice={coinPriceData.currentPrice} isFullScreen={isFullScreen} />
-                } */}
+                {isChartDataErrored && <div className='flex justify-center h-full items-center'><h1>API error...</h1></div>}
+                {isChartDataErrored && <div className='flex justify-center h-full items-center'><h1>API error...</h1></div>}
+
 
                 {currentButton === "Chart" && !isChartDataPending && !isChartDataErrored && 
-                !isCoinPriceDataPending && !isCoinPriceDataErrored && 
+                !isCoinPriceDataPending && !isCoinPriceDataErrored && selectedTimeRange.timeState === 180 &&
+                
+                  <AreaChart data={chartData.slice(Math.floor(chartData.length/2))} currentPrice={coinPriceData.currentPrice} isFullScreen={isFullScreen} />
+                }
+
+                {currentButton === "Chart" && !isChartDataPending && !isChartDataErrored && 
+                !isCoinPriceDataPending && !isCoinPriceDataErrored && selectedTimeRange.timeState === 90 &&
+                
+                  <AreaChart data={chartData.slice(Math.floor(chartData.length/4))} currentPrice={coinPriceData.currentPrice} isFullScreen={isFullScreen} />
+                }
+
+                {currentButton === "Chart" && !isChartDataPending && !isChartDataErrored && 
+                !isCoinPriceDataPending && !isCoinPriceDataErrored && selectedTimeRange.timeState !== 180 && selectedTimeRange.timeState !== 90 &&
                 
                   <AreaChart data={chartData} currentPrice={coinPriceData.currentPrice} isFullScreen={isFullScreen} />
                 }
