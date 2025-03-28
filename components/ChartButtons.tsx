@@ -14,7 +14,7 @@ const ChartButtons = ({ changeTimeRange, selectedTimeRange, toggleFullScreen }: 
                 </div>
 
 
-                <div className="flex space-x-1 items-center cursor-pointer font-medium hover:text-black/80">
+                <div className="flex space-x-1 items-center cursor-pointer font-medium bg-stone-100 px-2 hover:cursor-default">
                     <AiOutlinePlusCircle />
                     <p>Compare</p>
                 </div>
@@ -28,7 +28,7 @@ const ChartButtons = ({ changeTimeRange, selectedTimeRange, toggleFullScreen }: 
                         onClick={() => {
                             if (item.days !== 0)
                                 changeTimeRange(item.days)
-                        }} className={`px-2 rounded-sm font-medium text-black/50 ${item.days !== 0 && "hover:text-black/80"} ${selectedTimeRange === item.days && 'bg-[#4b40ee] text-white hover:text-white'}`}>
+                        }} className={`px-2 rounded-sm font-medium text-black/50 ${item.days === 0 && "bg-stone-100"} ${item.days !== 0 && "hover:text-black/80"} ${selectedTimeRange === item.days && 'bg-[#4b40ee] text-white hover:text-white'}`}>
                         {item.text}
                     </button>
                 ))}

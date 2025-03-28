@@ -138,11 +138,6 @@ export default function Home() {
                 {currentButton === "Settings" && <SettingsComponent />}
                
 
-                {/* {!isChartDataPending && !isChartDataErrored && 
-                !isCoinPriceDataPending && !isCoinPriceDataErrored && 
-                <AreaChart data={chartData} currentPrice={coinPriceData.currentPrice} isFullScreen={isFullScreen} />} */}
-                {/* <SummaryComponent /> */}
-
             </div>
           
             
