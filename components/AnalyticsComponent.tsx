@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 export default function AnalyticsComponent(){
   return (
-    <Card className="border-none shadow-md bg-card hover:shadow-lg transition-all duration-200 mt-6 mb-[190px]">
+    <Card className="border-none shadow-md bg-card hover:shadow-lg transition-all duration-200 mt-6">
         <CardHeader>
           <CardTitle className="text-xl font-semibold">Technical Indicators</CardTitle>
           <CardDescription>Analysis of key technical indicators</CardDescription>

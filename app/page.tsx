@@ -11,6 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
 import AnalyticsComponent from "@/components/AnalyticsComponent";
+import BottomDiv from "@/components/BottomDiv";
 
 
 export default function Home() {
@@ -89,23 +90,12 @@ export default function Home() {
       {/* Container div */}
       <div className="bg-white h-[700px]">
 
-          {/* Top Div */}
-          {!isCoinPriceDataPending && !isCoinPriceDataErrored && !isFullScreen &&
-          <TopDiv coinPriceData={coinPriceData} currentButton={currentButton} changeCurrentButton={changeCurrentButton}   />}
-
-              {
-                  (() => {
-                    if(isCoinPriceDataPending) {
-                      return (
-                        <div className="w-[80px] h-[210px]">
-
-                        </div>
-                      )
-                    }
-                  })()
-                }
+          {
+            !isFullScreen && (<TopDiv currentButton={currentButton} changeCurrentButton={changeCurrentButton}   />)
+          }
           
-            <div className={`ps-12 pe-32 pb-4 ${isFullScreen ? "w-[1200px] !important h-[600px] !important" : "w-[1000px] !important"}`}>
+          
+            {/* <div className={`ps-12 pe-32 pb-4 ${isFullScreen ? "w-[1200px] !important h-[600px] !important" : "w-[1000px] !important"}`}>
               
                 {currentButton === "Summary" && <SummaryComponent />}
 
@@ -114,18 +104,7 @@ export default function Home() {
                 <>
                   <ChartButtons changeTimeRange={changeTimeRange} selectedTimeRange={selectedTimeRange} toggleFullScreen={toggleFullScreen}  />
 
-                      {
-                        (() => {
-                          if(isChartDataPending || isCoinPriceDataPending) {
-                            return (
-                              <div className="w-[805px] h-[390px]">
-
-                              </div>
-                            )
-                          }
-                        })()
-                      }
-                    <AreaChart data={chartData} currentPrice={coinPriceData.currentPrice} isFullScreen={isFullScreen} />
+                  <AreaChart data={chartData} currentPrice={coinPriceData.currentPrice} isFullScreen={isFullScreen} />
 
 
                 </>
@@ -138,8 +117,16 @@ export default function Home() {
                 {currentButton === "Settings" && <SettingsComponent />}
                
 
-            </div>
+            </div> */}
           
+          <BottomDiv 
+          isFullScreen={isFullScreen} 
+          changeCurrentButton={changeCurrentButton}
+          changeTimeRange={changeTimeRange}
+          selectedTimeRange={selectedTimeRange}
+          currentButton={currentButton}
+          toggleFullScreen={toggleFullScreen}
+           />
             
       </div>
        
