@@ -11,7 +11,7 @@ const AreaChart = ({ data } : {data : any}) => {
     if (!data || data.length === 0) return;
 
     // Set dimensions and margins
-    const margin = { top: 50, right: 40, bottom: 40, left: 60 };
+    const margin = { top: 50+5, right: 40+5, bottom: 40+5, left: 60+5 };
     // const margin = { top: 2, right: 2, bottom: 2, left: 2 };
     const width = 800 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
@@ -27,6 +27,33 @@ const AreaChart = ({ data } : {data : any}) => {
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
+        svg.append("line")
+        .attr("x1", 0)
+        .attr("x2", width)
+        .attr("y1", height)
+        .attr("y2", height)
+        .attr("stroke", "black")
+        .attr("stroke-width", 0.3)
+        .attr("stroke-opacity", 0.3);
+    
+    svg.append("line")
+        .attr("x1", 0)
+        .attr("x2", 0)
+        .attr("y1", 0)
+        .attr("y2", height)
+        .attr("stroke", "black")
+        .attr("stroke-width", 1)
+        .attr("stroke-opacity", 0.3);
+    
+    svg.append("line")
+        .attr("x1", width)
+        .attr("x2", width)
+        .attr("y1", 0)
+        .attr("y2", height)
+        .attr("stroke", "black")
+        .attr("stroke-width", 1)
+        .attr("stroke-opacity", 0.3);
+
     // Define scales
     const x = d3.scaleTime().range([0, width]);
     const y = d3.scaleLinear().range([height, 0]);
@@ -40,7 +67,9 @@ const AreaChart = ({ data } : {data : any}) => {
 
     // Set the domains
     x.domain(d3.extent(data, d => d.timeStamp));
+
     y.domain([0, d3.max(data, d => d.price)]);
+    
     yVolume.domain([0, d3.max(data, d => d.volume)]);
 
     // Define gradient
@@ -73,7 +102,9 @@ const AreaChart = ({ data } : {data : any}) => {
         .datum(data)
         .attr("fill", "url(#area-gradient)")  
         .attr("d", area)
-        .attr("style", "outline: thin solid black;");
+        // .attr("style", "outline: thin solid black;");
+        .attr("style", "stroke: black; stroke-width: 1.5; stroke-opacity: 0.3; shape-rendering: crispEdges;")
+
 
     // Define line generator
     const line = d3.line()
