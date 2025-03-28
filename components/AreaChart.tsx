@@ -12,6 +12,7 @@ const AreaChart = ({ data } : {data : any}) => {
 
     // Set dimensions and margins
     const margin = { top: 50, right: 40, bottom: 40, left: 60 };
+    // const margin = { top: 2, right: 2, bottom: 2, left: 2 };
     const width = 800 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
     const barMaxHeight = height * 0.1; // 10% of the chart height
@@ -52,12 +53,12 @@ const AreaChart = ({ data } : {data : any}) => {
         .attr("y2", "100%");
 
     gradient.append("stop")
-        .attr("offset", "0%")
-        .attr("stop-color", "#85bb65")  
-        .attr("stop-opacity", 0.8);
+        .attr("offset", "5%")
+        .attr("stop-color", "#4b40ee")  
+        .attr("stop-opacity", 0.2);
 
     gradient.append("stop")
-        .attr("offset", "100%")
+        .attr("offset", "95%")
         .attr("stop-color", "white")  
         .attr("stop-opacity", 0.1);
 
@@ -71,7 +72,8 @@ const AreaChart = ({ data } : {data : any}) => {
     svg.append("path")
         .datum(data)
         .attr("fill", "url(#area-gradient)")  
-        .attr("d", area);
+        .attr("d", area)
+        .attr("style", "outline: thin solid black;");
 
     // Define line generator
     const line = d3.line()
@@ -82,7 +84,7 @@ const AreaChart = ({ data } : {data : any}) => {
     svg.append("path")
         .datum(data)
         .attr("fill", "none")
-        .attr("stroke", "#85bb65")
+        .attr("stroke", "#4b40ee")
         .attr("stroke-width", 1.5)
         .attr("d", line);
 
@@ -121,7 +123,7 @@ const AreaChart = ({ data } : {data : any}) => {
 
     // Circle at intersection
     const focusCircle = crosshairGroup.append("circle")
-        .attr("r", 4)
+        .attr("r", 1)
         .attr("fill", "black");
 
     // Tooltip for X-axis (datetime)
@@ -133,7 +135,7 @@ const AreaChart = ({ data } : {data : any}) => {
 
     // Tooltip for Y-axis (price) - Modified
     const yTooltipBackground = svg.append("rect")
-        .attr("fill", "lightgreen") // Green background
+        .attr("fill", "black") // Green background
         .attr("rx", 4)  // Rounded corners
         .attr("ry", 4)
         .style("display", "none");
@@ -141,19 +143,19 @@ const AreaChart = ({ data } : {data : any}) => {
     const yTooltip = svg.append("text")
         .attr("text-anchor", "end")
         .attr("font-size", "12px")
-        .attr("fill", "black")
+        .attr("fill", "white")
         .attr("dy", "0.35em") // Center text vertically
         .style("pointer-events", "none");
 
     // --- LATEST PRICE TAG ---
     const lastDataPoint = data[data.length - 1];
-    const latestPriceText = `$${lastDataPoint.price.toFixed(2)}`;
+    const latestPriceText = `${lastDataPoint.price.toFixed(2)}`;
     
     // Latest price background rectangle
     const latestPriceBackground = svg.append("rect")
         .attr("x", x(lastDataPoint.timeStamp) - 42)
         .attr("y", y(lastDataPoint.price) - 12)
-        .attr("fill", "#85bb65")  // Green background
+        .attr("fill", "#4b40ee")  // Purple background
         .attr("rx", 4)  // Rounded corners
         .attr("ry", 4);
 
@@ -161,14 +163,14 @@ const AreaChart = ({ data } : {data : any}) => {
     const latestPriceLabel = svg.append("text")
         .attr("x", x(lastDataPoint.timeStamp) - 40)
         .attr("y", y(lastDataPoint.price))
-        .attr("font-size", "14px")
-        .attr("fill", "black")
+        .attr("font-size", "18px")
+        .attr("fill", "white")
         .text(latestPriceText);
 
     // Adjust background size after adding text
     const labelBBox = latestPriceLabel.node().getBBox();
     latestPriceBackground
-        .attr("width", labelBBox.width + 10)
+        .attr("width", labelBBox.width + 20)
         .attr("height", labelBBox.height + 6)
         .attr("y", labelBBox.y - 3);
 
@@ -210,16 +212,16 @@ const AreaChart = ({ data } : {data : any}) => {
             xTooltip
                 .attr("x", xPos)
                 .attr("y", height + 15)
-                .text(d3.timeFormat("%b %d, %H:%M")(closest.timeStamp))
-                .style("display", "block");
+                // .text(d3.timeFormat("%b %d, %H:%M")(closest.timeStamp))
+                // .style("display", "block");
 
-            const yText = `$${closest.price.toFixed(2)}`;
+            const yText = `${closest.price.toFixed(2)}`;
             yTooltip
                 .attr("x", width + 36)
                 .attr("y", yPos)
                 .text(yText)
                 .style("display", "block")
-                .attr("font-size", "14px");
+                .attr("font-size", "18px");
 
             // Get text size and position background accordingly
             const bbox = yTooltip.node().getBBox();
