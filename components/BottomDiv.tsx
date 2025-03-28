@@ -99,7 +99,7 @@ const BottomDiv = ({
 
 
     return (
-            <div className={`ps-12 pe-32 pb-4 ${isFullScreen ? "w-[1200px] !important h-[600px] !important" : "w-[1000px] !important"}`}>
+            <div className={`ps-12 pe-32 ${isFullScreen ? "w-[1200px] !important h-[600px] !important" : "w-[1000px] !important"}`}>
               
               {currentButton === "Chart" && <ChartButtons changeTimeRange={changeTimeRange} selectedTimeRange={selectedTimeRange} toggleFullScreen={toggleFullScreen}  />}
 
@@ -110,9 +110,9 @@ const BottomDiv = ({
                 {currentButton === "Settings" && <SettingsComponent />}
                 
                 
-                {isCoinPriceDataPending && <Skeleton width={"full"} height={400} />}
+                {(isCoinPriceDataPending || isChartDataPending ) ? <Skeleton width={"full"} height={400} /> : null}
 
-                {isChartDataPending && <Skeleton width={"full"} height={400} />}
+                {/* {isChartDataPending && <Skeleton width={"full"} height={400} />} */}
 
                 {isChartDataErrored && <div className='flex justify-center h-full items-center'><h1>API error...</h1></div>}
                 {isChartDataErrored && <div className='flex justify-center h-full items-center'><h1>API error...</h1></div>}
