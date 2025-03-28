@@ -114,8 +114,8 @@ const BottomDiv = ({
 
                 {/* {isChartDataPending && <Skeleton width={"full"} height={400} />} */}
 
-                {isChartDataErrored && <div className='flex justify-center h-full items-center'><h1>API error...</h1></div>}
-                {isChartDataErrored && <div className='flex justify-center h-full items-center'><h1>API error...</h1></div>}
+                {(isChartDataErrored || isChartDataErrored ) ? <div className='flex justify-center h-full items-center'><h1>API error...</h1><h1>Please try again in sometime</h1></div> : null}
+                {/* {isChartDataErrored && <div className='flex justify-center h-full items-center'><h1>API error...</h1></div>} */}
 
 
                 {currentButton === "Chart" && !isChartDataPending && !isChartDataErrored && 
@@ -125,13 +125,13 @@ const BottomDiv = ({
                 }
 
                 {currentButton === "Chart" && !isChartDataPending && !isChartDataErrored && 
-                !isCoinPriceDataPending && !isCoinPriceDataErrored && selectedTimeRange.timeState === 90 &&
+                !isCoinPriceDataPending && !isCoinPriceDataErrored && selectedTimeRange.timeState === 30 &&
                 
-                  <AreaChart data={chartData.slice(Math.floor(chartData.length/4))} currentPrice={coinPriceData.currentPrice} isFullScreen={isFullScreen} />
+                  <AreaChart data={chartData.slice(0, Math.floor(chartData.length/12))} currentPrice={coinPriceData.currentPrice} isFullScreen={isFullScreen} />
                 }
 
                 {currentButton === "Chart" && !isChartDataPending && !isChartDataErrored && 
-                !isCoinPriceDataPending && !isCoinPriceDataErrored && selectedTimeRange.timeState !== 180 && selectedTimeRange.timeState !== 90 &&
+                !isCoinPriceDataPending && !isCoinPriceDataErrored && selectedTimeRange.timeState !== 180 && selectedTimeRange.timeState !== 30 &&
                 
                   <AreaChart data={chartData} currentPrice={coinPriceData.currentPrice} isFullScreen={isFullScreen} />
                 }
