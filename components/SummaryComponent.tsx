@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 
-export default function SummaryComponent( ) {
+export default function SummaryComponent() {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mt-6">
       <Card className="border-none shadow-md bg-card hover:shadow-lg transition-all duration-200">
@@ -81,25 +81,6 @@ export default function SummaryComponent( ) {
                 <span className="text-sm font-medium">+25%</span>
               </div>
             </div>
-
-            {/* <div className="grid grid-cols-2 gap-3">
-              <div className="rounded-lg bg-muted p-3">
-                <div className="text-xs text-muted-foreground mb-1">Volume Change</div>
-                <div className={`text-sm font-medium ${stats.volumeChange >= 0 ? "text-emerald-500" : "text-red-500"}`}>
-                  {stats.volumeChange >= 0 ? "+" : ""}
-                  {stats.volumeChange.toFixed(2)}%
-                </div>
-              </div>
-              <div className="rounded-lg bg-muted p-3">
-                <div className="text-xs text-muted-foreground mb-1">Volatility</div>
-                <div className="text-sm font-medium">Medium</div>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">Updated</span>
-              <span className="font-medium">Just now</span>
-            </div> */}
           </div>
         </CardContent>
       </Card>

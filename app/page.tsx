@@ -35,46 +35,20 @@ export default function Home() {
       {/* Container div */}
       <div className="bg-white h-[700px]">
 
-          {
-            !isFullScreen && (<TopDiv currentButton={currentButton} changeCurrentButton={changeCurrentButton}   />)
-          }
-          
-          
-            {/* <div className={`ps-12 pe-32 pb-4 ${isFullScreen ? "w-[1200px] !important h-[600px] !important" : "w-[1000px] !important"}`}>
-              
-                {currentButton === "Summary" && <SummaryComponent />}
+        {
+          !isFullScreen && (<TopDiv currentButton={currentButton} changeCurrentButton={changeCurrentButton} />)
+        }
 
-                {currentButton === "Chart" && !isChartDataPending && !isChartDataErrored && 
-                !isCoinPriceDataPending && !isCoinPriceDataErrored && 
-                <>
-                  <ChartButtons changeTimeRange={changeTimeRange} selectedTimeRange={selectedTimeRange} toggleFullScreen={toggleFullScreen}  />
-
-                  <AreaChart data={chartData} currentPrice={coinPriceData.currentPrice} isFullScreen={isFullScreen} />
-
-
-                </>
-                }
-
-                {currentButton === "Statistics" && <StatisticsComponent />}
-
-                {currentButton === "Analytics" && <AnalyticsComponent />}
-
-                {currentButton === "Settings" && <SettingsComponent />}
-               
-
-            </div> */}
-          
-          <BottomDiv 
-          isFullScreen={isFullScreen} 
+        <BottomDiv
+          isFullScreen={isFullScreen}
           changeTimeRange={changeTimeRange}
           selectedTimeRange={selectedTimeRange}
           currentButton={currentButton}
           toggleFullScreen={toggleFullScreen}
-           />
-            
+        />
+
       </div>
-       
-       
+
     </div>
   );
 }

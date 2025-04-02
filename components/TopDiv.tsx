@@ -8,14 +8,12 @@ import axios from 'axios'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
-const TopDiv = ({ currentButton, changeCurrentButton}: { currentButton: string, changeCurrentButton: (button: string) => void}) => {
-  
+const TopDiv = ({ currentButton, changeCurrentButton }: { currentButton: string, changeCurrentButton: (button: string) => void }) => {
+
     const { isPending: isCoinPriceDataPending, error: isCoinPriceDataErrored, data: coinPriceData } = useQuery({
         queryKey: [`price`],
         queryFn: async () => {
             const res = await axios.get(`${COINGECKO_API_URL}/api/v3/coins/bitcoin`)
-            // console.log("API call made")
-            // const transformedData = transformWholeData(res.data)
             const currentPrice = res.data.market_data.current_price.usd
             const priceChange24hr = res.data.market_data.price_change_24h
             const priceChangePerc24hr = res.data.market_data.price_change_percentage_24h
@@ -25,14 +23,14 @@ const TopDiv = ({ currentButton, changeCurrentButton}: { currentButton: string, 
                 priceChangePerc24hr
             }
         },
-        staleTime: 30*1000,
-        refetchInterval: 60*1000,
+        staleTime: 30 * 1000,
+        refetchInterval: 60 * 1000,
         notifyOnChangeProps: "all",
-      })
-  
-  
+    })
+
+
     return (
-    <div className="border-b space-y-3 ps-12 pe-32 pt-12">
+        <div className="border-b space-y-3 ps-12 pe-32 pt-12">
 
             {isCoinPriceDataErrored && <p>An error occured...</p>}
 
@@ -55,21 +53,21 @@ const TopDiv = ({ currentButton, changeCurrentButton}: { currentButton: string, 
                     </div>
                 )
             }
-            
 
-                <div className="flex">
-                    {buttons.map((item, index) => (
-                        <Link key={index} 
-                        href={"#"} 
+
+            <div className="flex">
+                {buttons.map((item, index) => (
+                    <Link key={index}
+                        href={"#"}
                         onClick={() => changeCurrentButton(item.name)}
-                        className={`${index === 0 ? "ps-0 py-3 pe-3" : "p-3"}  ${item.name === currentButton && "font-semibold border-b-4 hover:text-black" }  border-[#4b40ee]`}>{item.name}</Link>
-                    ))}
-
-                </div>
-
+                        className={`${index === 0 ? "ps-0 py-3 pe-3" : "p-3"}  ${item.name === currentButton && "font-semibold border-b-4 hover:text-black"}  border-[#4b40ee]`}>{item.name}</Link>
+                ))}
 
             </div>
-  )
+
+
+        </div>
+    )
 }
 
 export default TopDiv
