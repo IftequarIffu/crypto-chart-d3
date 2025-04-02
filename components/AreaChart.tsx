@@ -249,7 +249,7 @@ const AreaChart = ({ data, currentPrice, isFullScreen }: { data: any, currentPri
 
         // ---- Add horizontal grid lines ----
         const xGrid = svg.append("g")
-            .attr("class", "grid")
+            .attr("class", "grid").lower()
             .call(
                 d3.axisTop(x)
                     .ticks(6)
