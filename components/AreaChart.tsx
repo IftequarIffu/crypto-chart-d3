@@ -8,8 +8,6 @@ import * as d3 from "d3";
 const AreaChart = ({ data, currentPrice, isFullScreen }: { data: any, currentPrice: number, isFullScreen: boolean }) => {
     const chartRef = useRef();
 
-    console.log(data)
-
     useEffect(() => {
         if (!data || data.length === 0) return;
 
@@ -51,10 +49,12 @@ const AreaChart = ({ data, currentPrice, isFullScreen }: { data: any, currentPri
             d.volume = +d.volume;
         });
 
+        const range = d3.max(data, d => d.price) - d3.min(data, d => d.price)
+        const topAndBottomSpaceInChart = range/10
         // Set the domains
         x.domain(d3.extent(data, d => d.timeStamp));
 
-        y.domain([0, d3.max(data, d => d.price)]);
+        y.domain([d3.min(data, d => d.price) - topAndBottomSpaceInChart*2, d3.max(data, d => d.price) + topAndBottomSpaceInChart]);
 
         yVolume.domain([0, d3.max(data, d => d.volume)]);
 
