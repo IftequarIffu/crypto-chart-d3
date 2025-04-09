@@ -231,7 +231,7 @@ const AreaChart = ({ data, currentPrice, isFullScreen }: { data: any, currentPri
 
                 const yText = `${closest.price.toFixed(2)}`;
                 yTooltip
-                    .attr("x", width + 50)
+                    .attr("x", width + 75)
                     .attr("y", yPos + 4)
                     .text(yText)
                     .style("display", "block")
