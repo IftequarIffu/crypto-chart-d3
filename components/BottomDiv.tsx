@@ -102,7 +102,7 @@ const BottomDiv = ({
       {currentButton === "Chart" && !isChartDataPending && !isChartDataErrored &&
         !isCoinPriceDataPending && !isCoinPriceDataErrored && selectedTimeRange.timeState === 30 &&
 
-        <AreaChart data={chartData.slice(0, Math.floor(chartData.length / 12))} currentPrice={coinPriceData.currentPrice} isFullScreen={isFullScreen} />
+        <AreaChart data={chartData.slice(Math.floor(chartData.length / 12))} currentPrice={coinPriceData.currentPrice} isFullScreen={isFullScreen} />
       }
 
       {currentButton === "Chart" && !isChartDataPending && !isChartDataErrored &&
