@@ -76,7 +76,7 @@ const BottomDiv = ({
 
 
   return (
-    <div className={`ps-12 pe-32 ${isFullScreen ? "w-[1200px] !important h-[600px] !important" : "w-[1000px] !important"}`}>
+    <div className={`ps-12 pe-36 ${isFullScreen ? "w-[1200px] !important h-[600px] !important" : "w-[1000px] !important"}`}>
 
       {currentButton === "Chart" && <ChartButtons changeTimeRange={changeTimeRange} selectedTimeRange={selectedTimeRange} toggleFullScreen={toggleFullScreen} />}
 

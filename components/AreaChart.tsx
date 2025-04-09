@@ -13,7 +13,7 @@ const AreaChart = ({ data, currentPrice, isFullScreen }: { data: any, currentPri
 
         // Set dimensions and margins
         // const margin = { top: 50+5, right: 40+5, bottom: 40+5, left: 60+5 };
-        const margin = { top: 3, right: 3, bottom: 3, left: 3 };
+        const margin = { top: 3, right: 0, bottom: 3, left: 3 };
         let width;
         let height;
         if (isFullScreen) {
