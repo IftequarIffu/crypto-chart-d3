@@ -45,7 +45,6 @@ const BottomDiv = ({
     queryKey: [`timeRange-${selectedTimeRange.useQueryCacheKey}`],
     queryFn: async () => {
       const res = await axios.get(`${COINGECKO_API_URL}/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=${selectedTimeRange.useQueryCacheKey}`)
-      // console.log("API call made")
       const transformedData = transformWholeData(res.data)
       return transformedData
     },
@@ -58,8 +57,6 @@ const BottomDiv = ({
     queryKey: [`price`],
     queryFn: async () => {
       const res = await axios.get(`${COINGECKO_API_URL}/api/v3/coins/bitcoin`)
-      // console.log("API call made")
-      // const transformedData = transformWholeData(res.data)
       const currentPrice = res.data.market_data.current_price.usd
       const priceChange24hr = res.data.market_data.price_change_24h
       const priceChangePerc24hr = res.data.market_data.price_change_percentage_24h
@@ -86,30 +83,50 @@ const BottomDiv = ({
       {currentButton === "Analytics" && <AnalyticsComponent />}
       {currentButton === "Settings" && <SettingsComponent />}
 
+      {
+        (() => {
+          if((isChartDataPending || isChartDataPending)) {
+            if(!isFullScreen) {
+              return (
+                <Skeleton width={"full"} height={400} />
+              )
+            }
+            else {
+              return (
+                <Skeleton width={"full"} height={600} />
+              )
+            }
+          }
+          else {
+            return null;
+          }
+        })()
+      }
 
-      {((isCoinPriceDataPending || isChartDataPending) && !isFullScreen) ? <Skeleton width={"full"} height={400} /> : null}
-
-      {((isCoinPriceDataPending || isChartDataPending) && isFullScreen) ? <Skeleton width={"full"} height={600} /> : null}
 
       {(isChartDataErrored || isChartDataErrored) ? <div className='flex justify-center h-full items-center'><h1>API error...</h1><h1>Please try again in sometime</h1></div> : null}
 
+      {
+        (() => {
+          if(currentButton === "Chart" && !isChartDataPending && !isChartDataErrored &&
+            !isCoinPriceDataPending && !isCoinPriceDataErrored) {
 
-      {currentButton === "Chart" && !isChartDataPending && !isChartDataErrored &&
-        !isCoinPriceDataPending && !isCoinPriceDataErrored && selectedTimeRange.timeState === 180 &&
+              if(selectedTimeRange.timeState === 180)
+                return (
+                  <AreaChart data={chartData.slice(Math.floor(chartData.length / 2))} currentPrice={coinPriceData.currentPrice} isFullScreen={isFullScreen} />
+                )
 
-        <AreaChart data={chartData.slice(Math.floor(chartData.length / 2))} currentPrice={coinPriceData.currentPrice} isFullScreen={isFullScreen} />
-      }
-
-      {currentButton === "Chart" && !isChartDataPending && !isChartDataErrored &&
-        !isCoinPriceDataPending && !isCoinPriceDataErrored && selectedTimeRange.timeState === 30 &&
-
-        <AreaChart data={chartData.slice(Math.floor(chartData.length / 12))} currentPrice={coinPriceData.currentPrice} isFullScreen={isFullScreen} />
-      }
-
-      {currentButton === "Chart" && !isChartDataPending && !isChartDataErrored &&
-        !isCoinPriceDataPending && !isCoinPriceDataErrored && selectedTimeRange.timeState !== 180 && selectedTimeRange.timeState !== 30 &&
-
-        <AreaChart data={chartData} currentPrice={coinPriceData.currentPrice} isFullScreen={isFullScreen} />
+              else if(selectedTimeRange.timeState === 30) 
+                return (
+                  <AreaChart data={chartData.slice(Math.floor(chartData.length / 12))} currentPrice={coinPriceData.currentPrice} isFullScreen={isFullScreen} />
+              )
+              
+              else if(selectedTimeRange.timeState !== 180 && selectedTimeRange.timeState !== 30)
+                return (
+                  <AreaChart data={chartData} currentPrice={coinPriceData.currentPrice} isFullScreen={isFullScreen} />
+              )
+            }
+        })()
       }
 
     </div>
