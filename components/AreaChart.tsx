@@ -167,7 +167,7 @@ const AreaChart = ({ data, currentPrice, isFullScreen }: { data: any, currentPri
 
         // Latest price background rectangle
         const latestPriceBackground = svg.append("rect")
-            .attr("x", x(lastDataPoint.timeStamp) - 42)
+            .attr("x", x(lastDataPoint.timeStamp) - 12)
             .attr("y", y(lastDataPoint.price) + 10)
             .attr("fill", "#4b40ee")  // Purple background
             .attr("rx", 4)  // Rounded corners
@@ -175,7 +175,7 @@ const AreaChart = ({ data, currentPrice, isFullScreen }: { data: any, currentPri
 
         // Latest price text
         const latestPriceLabel = svg.append("text")
-            .attr("x", x(lastDataPoint.timeStamp) - 30)
+            .attr("x", x(lastDataPoint.timeStamp) - 0)
             .attr("y", y(lastDataPoint.price))
             .attr("font-size", "18px")
             .attr("fill", "white")
