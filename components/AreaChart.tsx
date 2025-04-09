@@ -4,6 +4,7 @@
 'use client'
 import { useEffect, useRef } from "react"
 import * as d3 from "d3";
+import { convertIntegerToCommaFormat } from "@/lib/utils";
 
 const AreaChart = ({ data, currentPrice, isFullScreen }: { data: any, currentPrice: number, isFullScreen: boolean }) => {
     const chartRef = useRef();
@@ -179,7 +180,7 @@ const AreaChart = ({ data, currentPrice, isFullScreen }: { data: any, currentPri
             .attr("y", y(lastDataPoint.price))
             .attr("font-size", "18px")
             .attr("fill", "white")
-            .text(latestPriceText);
+            .text(convertIntegerToCommaFormat(latestPriceText));
 
         // Adjust background size after adding text
         const labelBBox = latestPriceLabel.node().getBBox();
@@ -229,10 +230,10 @@ const AreaChart = ({ data, currentPrice, isFullScreen }: { data: any, currentPri
                 // .text(d3.timeFormat("%b %d, %H:%M")(closest.timeStamp))
                 // .style("display", "block");
 
-                const yText = `${closest.price.toFixed(2)}`;
+                const yText = `${convertIntegerToCommaFormat(closest.price.toFixed(2))}`;
                 yTooltip
                     .attr("x", width + 75)
-                    .attr("y", yPos + 4)
+                    .attr("y", yPos + 6)
                     .text(yText)
                     .style("display", "block")
                     .attr("font-size", "18px");
@@ -243,7 +244,7 @@ const AreaChart = ({ data, currentPrice, isFullScreen }: { data: any, currentPri
                     .attr("x", bbox.x - 10)
                     .attr("y", bbox.y - 4)
                     .attr("width", bbox.width + 20)
-                    .attr("height", bbox.height + 8)
+                    .attr("height", bbox.height + 10)
                     .style("display", "block");
             });
 
@@ -267,7 +268,7 @@ const AreaChart = ({ data, currentPrice, isFullScreen }: { data: any, currentPri
 
 
     return (
-        <div className="border-2 border-t-0  border-black/10">
+        <div className="border-2 border-t-0 font-circularstd  border-black/10">
             <svg ref={chartRef}></svg>
         </div>
 

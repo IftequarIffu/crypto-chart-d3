@@ -37,12 +37,12 @@ const TopDiv = ({ currentButton, changeCurrentButton }: { currentButton: string,
             {isCoinPriceDataPending && <Skeleton width={230} height={84} />}
             {
                 !isCoinPriceDataErrored && !isCoinPriceDataPending && (
-                    <div className="space-y-1 font-semibold">
+                    <div className="space-y-1 font-medium font-circularstd">
                         <div className="flex gap-1 items-start">
                             <h1 className="text-6xl">{convertIntegerToCommaFormat(coinPriceData?.currentPrice)}</h1>
                             <sub className="text-gray-600/50 font-semibold text-2xl">USD</sub>
                         </div>
-                        <div className={`flex gap-1 text-md font-semibold ${coinPriceData?.priceChange24hr > 0 ? "text-green-600" : "text-red-600"}`}>
+                        <div className={`flex gap-1 text-md font-medium ${coinPriceData?.priceChange24hr > 0 ? "text-green-600" : "text-red-600"}`}>
                             <p>
                                 {coinPriceData?.priceChange24hr > 0 && "+"}
                                 {coinPriceData?.priceChange24hr.toFixed(2)}
