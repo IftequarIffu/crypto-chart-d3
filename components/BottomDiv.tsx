@@ -87,8 +87,9 @@ const BottomDiv = ({
       {currentButton === "Settings" && <SettingsComponent />}
 
 
-      {(isCoinPriceDataPending || isChartDataPending) ? <Skeleton width={"full"} height={400} /> : null}
+      {((isCoinPriceDataPending || isChartDataPending) && !isFullScreen) ? <Skeleton width={"full"} height={400} /> : null}
 
+      {((isCoinPriceDataPending || isChartDataPending) && isFullScreen) ? <Skeleton width={"full"} height={600} /> : null}
 
       {(isChartDataErrored || isChartDataErrored) ? <div className='flex justify-center h-full items-center'><h1>API error...</h1><h1>Please try again in sometime</h1></div> : null}
 
